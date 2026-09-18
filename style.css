@@ -33,6 +33,12 @@ header {
     width: auto;
     margin-bottom: 0.5rem;
 }
+.logo-generico {
+    height: 56px;
+    line-height: 56px;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
 header h2 {
     font-weight: normal;
     opacity: .75;
@@ -45,6 +51,7 @@ header h2 {
 
 @media (max-width: 600px) {
     .logo-header { height: 44px; }
+    .logo-generico { height: 44px; line-height: 44px; font-size: 1.7rem; }
 }
 
 main {
