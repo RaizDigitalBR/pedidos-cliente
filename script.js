@@ -137,6 +137,12 @@ function atualizarCarrinho() {
     totalLinha.style.display = 'block';
 }
 
+// ── ENTREGA (retirada no local ou entrega dentro do condomínio) ────────────
+window.atualizarTipoEntrega = () => {
+    const tipo = document.querySelector('input[name="tipoEntrega"]:checked').value;
+    document.getElementById('campo-bloco-apto').style.display = (tipo === 'entrega') ? 'block' : 'none';
+};
+
 // ── PEDIDO ────────────────────────────────────────────────────────────────
 window.confirmarPedido = async () => {
     // Checagem dupla: mesmo que o botão tenha sido reabilitado por algum
@@ -148,6 +154,13 @@ window.confirmarPedido = async () => {
     if (!nome)            { showToast('Informe seu nome antes de pedir ⚠️'); return; }
     if (!carrinho.length) { showToast('Adicione itens ao carrinho ⚠️'); return; }
 
+    const tipoEntrega = document.querySelector('input[name="tipoEntrega"]:checked').value;
+    const blocoApto   = document.getElementById('blocoApto').value.trim();
+    if (tipoEntrega === 'entrega' && !blocoApto) {
+        showToast('Informe bloco e apartamento para entrega ⚠️');
+        return;
+    }
+
     const btn = document.getElementById('btn-pedir');
     btn.disabled = true; btn.textContent = 'Enviando...';
 
@@ -155,7 +168,8 @@ window.confirmarPedido = async () => {
         const obs = document.getElementById('obs-pedido').value.trim();
         const ref = await addDoc(collection(db,'pedidos'), {
             cliente: nome,
-            tipo: 'balcao',
+            tipo: tipoEntrega,
+            enderecoEntrega: tipoEntrega === 'entrega' ? blocoApto : '',
             observacoes: obs,
             itens: carrinho.map(i => ({id:i.id, nome:i.nome, qtd:i.qtd, preco:i.preco})),
             total: carrinho.reduce((s,i) => s + i.preco * i.qtd, 0),
@@ -170,6 +184,9 @@ window.confirmarPedido = async () => {
         carrinho = [];
         atualizarCarrinho();
         document.getElementById('obs-pedido').value = '';
+        document.getElementById('blocoApto').value = '';
+        document.querySelector('input[name="tipoEntrega"][value="retirada"]').checked = true;
+        document.getElementById('campo-bloco-apto').style.display = 'none';
         document.getElementById('modalConfirmacao').classList.add('open');
         iniciarAcompanhamento(ref.id);
     } catch(e) {

@@ -10,7 +10,7 @@
 <body>
 
 <header>
-    <div class="logo-header logo-generico"></div>
+    <div class="logo-header logo-generico">🍽️</div>
     <h2>Faça seu pedido: retirada no local</h2>
 </header>
 
@@ -21,6 +21,21 @@
         <div class="campo-nome">
             <label for="nomeCliente">Seu nome *</label>
             <input type="text" id="nomeCliente" placeholder="Ex: João Silva">
+        </div>
+
+        <div class="campo-entrega-tipo" style="margin-top:.8rem">
+            <label style="font-weight:bold;color:#4a3728;display:block;margin-bottom:.4rem">Como vai receber? *</label>
+            <label style="font-weight:normal;display:block;margin-bottom:.3rem">
+                <input type="radio" name="tipoEntrega" value="retirada" checked onchange="atualizarTipoEntrega()"> Retirada no local
+            </label>
+            <label style="font-weight:normal;display:block">
+                <input type="radio" name="tipoEntrega" value="entrega" onchange="atualizarTipoEntrega()"> Entrega (apenas dentro do condomínio)
+            </label>
+        </div>
+
+        <div id="campo-bloco-apto" class="campo-nome" style="display:none;margin-top:.6rem">
+            <label for="blocoApto">Bloco e apartamento *</label>
+            <input type="text" id="blocoApto" placeholder="Ex: Bloco 3, Apto 202">
         </div>
     </section>
 
@@ -55,7 +70,7 @@
             </p>
         </div>
         <label for="obs-pedido" style="font-weight:bold;color:#4a3728;display:block;margin-bottom:.4rem">Observações (opcional)</label>
-        <textarea id="obs-pedido" rows="2"></textarea>
+        <textarea id="obs-pedido" rows="2" placeholder="Ex: sem cebola, mais arroz..."></textarea>
         <button id="btn-pedir" onclick="confirmarPedido()">Fazer Pedido</button>
     </section>
 
